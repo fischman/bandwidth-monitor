@@ -1,0 +1,3 @@
+-keep class org.fischman.bandwidthmonitor.MainActivity { *; }
+-keep class org.fischman.bandwidthmonitor.BandwidthService { *; }
+-dontobfuscate
