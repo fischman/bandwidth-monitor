@@ -26,3 +26,7 @@ etc.
 - `./.headless/build-and-deploy.sh` to build and deploy to an
   `adb`-connected device or emulator. Append `--release` for a minimal
   APK, ~23KB rather than the debug APK which weighs in ~806KB, or 35x bigger.
+
+# Demo
+
+<img src="https://github.com/user-attachments/assets/75be7287-729e-4bd2-bb62-627cd84fe0f5" width=540>
