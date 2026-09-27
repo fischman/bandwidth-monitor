@@ -38,14 +38,10 @@ class MainActivity : Activity(), View.OnClickListener {
 
     override fun onClick(v: View) = tryStart()
 
-    private fun needPerm(): Boolean =
-        (
-            (Build.VERSION.SDK_INT >= 33) &&
-                (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
-        )
-
     private fun tryStart() {
-        if (needPerm()) {
+        if ((Build.VERSION.SDK_INT >= 33) &&
+            (checkSelfPermission(android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED)
+        ) {
             status.text = "Notification permission needed."
             requestPermissions(arrayOf(android.Manifest.permission.POST_NOTIFICATIONS), 1)
             return

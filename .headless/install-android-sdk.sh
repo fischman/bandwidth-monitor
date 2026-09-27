@@ -31,8 +31,8 @@ yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null
 
 "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" \
   "platform-tools" \
-  "platforms;android-35" \
-  "build-tools;35.0.0"
+  "platforms;android-37.0" \
+  "build-tools;37.0.0"
 
 echo ""
 echo "Done. Adding ANDROID_HOME and its PATH to ~/.bashrc"

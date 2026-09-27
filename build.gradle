@@ -1,27 +1,19 @@
 plugins {
-    id 'com.android.application' version '8.2.2'
-    id 'org.jetbrains.kotlin.android' version '1.9.22'
+    id 'com.android.application' version '9.0.1'
     id 'org.jlleitschuh.gradle.ktlint' version '12.1.0'
 }
 
 android {
     namespace 'org.fischman.bandwidthmonitor'
-    compileSdk 34
+
+    compileSdk 37
 
     defaultConfig {
         applicationId "org.fischman.bandwidthmonitor"
         minSdk 26
-        targetSdk 34
+        targetSdk 37
         versionCode 1
         versionName "1.0"
-    }
-
-    sourceSets {
-        main {
-            manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = ['src']
-            res.srcDirs = ['res']
-        }
     }
 
     buildTypes {
@@ -36,9 +28,11 @@ android {
         sourceCompatibility JavaVersion.VERSION_21
         targetCompatibility JavaVersion.VERSION_21
     }
+}
 
-    kotlinOptions {
-        jvmTarget = '21'
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
     }
 }
 

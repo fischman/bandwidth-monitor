@@ -1,6 +1,8 @@
 package org.fischman.bandwidthmonitor
 
 import android.app.Notification
+import android.app.Notification.MetricStyle
+import android.app.Notification.Metric
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -12,6 +14,7 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.Icon
 import android.net.TrafficStats
+import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -66,8 +69,22 @@ class BandwidthService : Service(), Runnable {
     ): Notification {
         val b = Notification.Builder(this, CHAN)
         b.setForegroundServiceBehavior(Notification.FOREGROUND_SERVICE_IMMEDIATE)
-        val icon = buildIcon(rxSpeed, txSpeed)
-        return b.setSmallIcon(icon)
+
+        if (Build.VERSION.SDK_INT >= 37) {
+            val (rf, ru) = fmtFloat(rxSpeed)
+            val (tf, tu) = fmtFloat(txSpeed)
+            b
+                .setRequestPromotedOngoing(true)
+                .setSmallIcon(R.drawable.ic_launcher)
+                .setSubText("tap to stop monitoring")
+                .setStyle(MetricStyle()
+                    .addMetric(Metric(Metric.FixedFloat(rf, ru, 0, 1), "Download"))
+                    .addMetric(Metric(Metric.FixedFloat(tf, tu, 0, 1), "Upload"))
+                )
+        } else {
+            b.setSmallIcon(buildIcon(rxSpeed, txSpeed))
+        }
+        return b
             .setContentTitle(applicationInfo.loadLabel(packageManager).toString())
             .setContentText("Tap to stop monitoring")
             .setOngoing(true)
@@ -143,5 +160,16 @@ class BandwidthService : Service(), Runnable {
                 bytes < 1024L * 1024L * 10L -> "%.1fM".format(bytes / (1024.0 * 1024.0))
                 else -> "${bytes / (1024L * 1024L)}M"
             }
+
+        fun fmtFloat(bytes: Long): Pair<Float, String> {
+            val b = bytes.toFloat()
+            return when {
+                b < 100 -> b to "B"
+                b < 100_000 -> b / 1_024f to "KiB"
+                b < 100_000_000 -> b / 1_048_576f to "MiB"
+                else -> b / 1_073_741_824f to "GiB"
+            }
+        }
+
     }
 }
